@@ -3,7 +3,6 @@ import "@nomiclabs/hardhat-solhint";
 import "hardhat-typechain";
 import "hardhat-abi-exporter";
 import "solidity-coverage";
-import "@tenderly/hardhat-tenderly";
 import { HardhatUserConfig, task } from "hardhat/config";
 import * as fs from "fs";
 //const fs = require("fs");
