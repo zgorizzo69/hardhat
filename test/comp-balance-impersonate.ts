@@ -40,6 +40,13 @@ describe("comp balance impersonate", function () {
     );
 
     await comp.transfer(receiver, senderBalance);
+    let newReceiverBalance = await comp.balanceOf(receiver);
+    console.log(
+      `New Receiver's COMP  balance is: ${ethers.utils.formatEther(
+        newReceiverBalance
+      )}`
+    );
+    expect(newReceiverBalance).to.equal(senderBalance);
 
     const newSenderBalance = await comp.balanceOf(sender);
     //  newSenderBalance should be equal to 0 !
@@ -48,20 +55,17 @@ describe("comp balance impersonate", function () {
         newSenderBalance
       )}`
     );
-    let newReceiverBalance = await comp.balanceOf(receiver);
-    console.log(
-      `New Receiver's COMP  balance is: ${ethers.utils.formatEther(
-        newReceiverBalance
-      )}`
-    );
-
-    await comp.transfer(receiver, senderBalance);
+    expect(newSenderBalance).to.equal(0);
     //  it shouldn't be possible to send the total balance twice !
+    await expect(comp.transfer(receiver, senderBalance)).to.be.reverted;
+
     newReceiverBalance = await comp.balanceOf(receiver);
     console.log(
       `Impossible New Receiver's COMP  balance is: ${ethers.utils.formatEther(
         newReceiverBalance
       )}`
     );
+    // receiver balance should stay the same as the 2nd transfer should fail
+    expect(newReceiverBalance).to.equal(senderBalance);
   });
 });
